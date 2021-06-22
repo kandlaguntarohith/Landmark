@@ -1,0 +1,52 @@
+<% layout('layouts/boilerplate') %>
+<h1 class="mt-10 mb-3 position-relative text-dark temp">Landmarks</h1>
+<% for(let land of landmarks) {%>
+<div class="card mb-3 ">
+  <div class="row">
+    <div class="col-md-4">
+      <% if(land.images.length > 0) {%>
+      <img src="<%=land.images[0].cover%> " alt="" class="img-fluid" />
+      <% }else{ %>
+      <img
+        src="https://cdn.allmissoula.com/images/content/20143_55e874_gros_ventre_landmark_lg.jpg"
+        alt=""
+        class="img-fluid"
+      />
+      <% } %>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%=land.title %></h5>
+        <p class="card-text"><%=land.description %></p>
+        <p class="card-text">
+          <small class="text-muted"><%=land.location %> </small>
+        </p>
+        <a class="btn btn-primary" href="/landmarks/<%=land._id%>"
+          >View <%=land.title %>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<script>
+  const mapToken = `<%-process.env.MAPBOX_TOKEN%>`;
+  const tmp = JSON.parse(`<%- JSON.stringify(landmarks) %>`);
+  // console.log(tmp);
+  const cmp = tmp.map((land) => {
+    const img = land.images[0].url.replace(
+      "/upload",
+      "/upload/c_scale,h_100,q_auto,r_0,w_200"
+    );
+    land.properties = {
+      popUpMarkup: `
+      <img src="${img}" alt="" style : "height:20px; width 20px;">
+  <strong><a href="/landmarks/${land._id}">${land.title}</a><strong>
+  <p>${land.description.substring(0, 30)}...</p>`,
+    };
+    return land;
+  });
+  const landmarks = { features: tmp };
+</script>
+<script src="/javascripts/clusterMap.js"></script>
