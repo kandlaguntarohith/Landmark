@@ -44,22 +44,43 @@
         />
         <div class="valid-feedback">Looks good!</div>
       </div>
-      <div class="mb-3">
-        <label class="form-label" for="price">landmark Price</label>
-        <div class="input-group">
-          <span class="input-group-text" id="price-label">₹</span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="0.00"
-            aria-label="price-label"
-            aria-describedby="price-label"
-            id="price"
-            name="landmark[price]"
-            value="<%=landmark.price %> "
-            required
-          />
-          <div class="valid-feedback">Looks good!</div>
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="price">landmark Price</label>
+          <div class="input-group">
+            <span class="input-group-text" id="price-label">₹</span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="0.00"
+              aria-label="price-label"
+              aria-describedby="price-label"
+              id="price"
+              name="landmark[price]"
+              value="<%=landmark.price%> "
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="category">Category</label>
+          <div class="input-group">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              id="category"
+              name="landmark[category]"
+              required
+            >
+              <% for(let cat of categories) {%>
+              <option value="<%=cat%>" <%=cat == landmark.category ? 'selected' : '' %> >
+                <%=cat.toUpperCase()[0]%><%=cat.substring(1)%>
+              </option>
+              <% } %>
+            </select>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
         </div>
       </div>
       <div class="mb-3">

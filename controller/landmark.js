@@ -4,14 +4,23 @@ const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const categories = [
+  "hotel",
+  "restaurant",
+  "cricket",
+  "football",
+  "school",
+  "gym",
+  "beach",
+  "trek",
+];
 
 module.exports.renderNewlandmark = (req, res) => {
-  res.render("landmarks/new");
+  res.render("landmarks/new", { categories });
 };
 
 module.exports.renderShowlandmark = async (req, res) => {
-  const landmark = await Landmark
-    .findById(req.params.id)
+  const landmark = await Landmark.findById(req.params.id)
     .populate({
       path: "reviews",
       populate: {
@@ -32,7 +41,7 @@ module.exports.renderEditlandmark = async (req, res) => {
     req.flash("error", "landmark not found !!");
     res.redirect("/landmarks");
   }
-  res.render("landmarks/edit", { landmark });
+  res.render("landmarks/edit", { landmark, categories });
 };
 
 module.exports.putlandmark = async (req, res) => {
@@ -76,7 +85,6 @@ module.exports.deletelandmark = async (req, res) => {
 };
 
 module.exports.postlandmark = async (req, res) => {
-
   const geoData = await geocoder
     .forwardGeocode({
       query: req.body.landmark.location,
@@ -98,6 +106,17 @@ module.exports.postlandmark = async (req, res) => {
   res.redirect(`/landmarks/${data._id}`);
 };
 module.exports.renderAlllandmarks = async (req, res) => {
-  const landmarks = await Landmark.find({});
-  res.render("landmarks/index", { landmarks });
+  const { search, category = "all" } = req.query;
+  const query = {};
+  if (search) query.title = { $regex: ".*" + search + ".*" };
+  if (category !== "all") query.category = category;
+  const landmarks = await Landmark.find(query);
+  // console.log(category);
+
+  res.render("landmarks/index", {
+    landmarks,
+    search,
+    category,
+    categories: ["all", ...categories],
+  });
 };

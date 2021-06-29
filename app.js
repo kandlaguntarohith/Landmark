@@ -57,28 +57,32 @@ const connectSrcUrls = [
 ];
 const fontSrcUrls = [
   // "https://open.scdn.co/"
+  "https://fonts.googleapis.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://fonts.gstatic.com/",
 ];
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: [],
-      connectSrc: ["'self'", ...connectSrcUrls],
-      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-      workerSrc: ["'self'", "blob:"],
-      objectSrc: [],
-      imgSrc: [
-        "'self'",
-        "blob:",
-        "data:",
-        "https://res.cloudinary.com/rohithreddy/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
-        "https://images.unsplash.com/",
-        "https://images3.alphacoders.com/",
-      ],
-      fontSrc: ["'self'", ...fontSrcUrls],
-    },
-  })
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: [],
+//       connectSrc: ["'self'", ...connectSrcUrls],
+//       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+//       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+//       workerSrc: ["'self'", "blob:"],
+//       objectSrc: [],
+//       imgSrc: [
+//         "'self'",
+//         "blob:",
+//         "data:",
+//         "https://res.cloudinary.com/rohithreddy/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+//         "https://images.unsplash.com/",
+//         "https://images3.alphacoders.com/",
+//         "https://i.ytimg.com/",
+//       ],
+//       fontSrc: ["'self'", ...fontSrcUrls],
+//     },
+//   })
+// );
 const store = MongoStore.create({
   mongoUrl: db_url,
   touchAfter: 24 * 60 * 60,
@@ -124,8 +128,10 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  if (req.originalUrl === "/landmarks") {
+  // console.log(req.originalUrl);
+  if (req.originalUrl.split('?')[0] === "/landmarks") {
     res.locals.showBgMap = 1;
+    res.locals.size = 10;
   } else {
     res.locals.showBgMap = 0;
   }

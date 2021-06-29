@@ -3,6 +3,16 @@ const Review = require("./review");
 const Schema = mongoose.Schema;
 const { cloudinary } = require("../cloudinary/index");
 const opts = { toJSON: { virtuals: true } };
+const categories = [
+  "hotel",
+  "restaurant",
+  "cricket",
+  "football",
+  "school",
+  "gym",
+  "beach",
+  "trek",
+];
 
 const ImageSchema = new Schema({
   url: String,
@@ -31,6 +41,11 @@ const landmarkSchema = new Schema(
         type: [Number],
         required: true,
       },
+    },
+    category: {
+      type: String,
+      enum: categories,
+      required: true,
     },
     description: String,
     location: String,

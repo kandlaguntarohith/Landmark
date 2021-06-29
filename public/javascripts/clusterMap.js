@@ -1,4 +1,5 @@
 const createClusteredMap = async () => {
+  // console.log(landmarks);
   let longitude = -103.59179687498357;
   let latitude = 40.66995747013945;
   const data = await fetch("https://ipapi.co/json/");
@@ -10,6 +11,7 @@ const createClusteredMap = async () => {
   const map = new mapboxgl.Map({
     container: "cluster-map",
     style: "mapbox://styles/mapbox/light-v10",
+    // style: "mapbox://styles/mapbox/navigation-day-v1",
     center: [longitude, latitude],
     zoom: 8,
   });
@@ -131,3 +133,19 @@ const createClusteredMap = async () => {
 //   .then((data) => data.json())
 //   .then((data) => console.log(data));
 createClusteredMap();
+
+window.addEventListener("scroll", () => {
+  // console.log(
+  //   window.scrollY,
+  //   "   ",
+  //   window.innerHeight,
+  //   "   ",
+  //   document.documentElement.scrollHeight
+  // );
+  if (
+    window.scrollY + window.innerHeight >=
+    document.documentElement.scrollHeight
+  ) {
+    console.log("end");
+  }
+});

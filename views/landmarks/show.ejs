@@ -42,7 +42,9 @@
         <p class="card-text"><%=landmark.description %></p>
       </div>
       <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%=landmark.category.toUpperCase()[0]%><%=landmark.category.substring(1)%></li>
         <li class="list-group-item text-muted"><%=landmark.location %></li>
+        
         <li class="list-group-item">
           Posted By : <%=landmark.author.username%>
         </li>

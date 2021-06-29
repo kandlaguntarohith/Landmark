@@ -1,11 +1,11 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const catchError = require("../utils/catch-error");
 const { isLoggedIn, validatelandmark, isAuthor } = require("../middleware");
 const landmarks = require("../controller/landmark");
 const multer = require("multer");
 const { storage } = require("../cloudinary/index");
-const upload = multer({storage});
+const upload = multer({ storage });
 
 router
   .route("/")
