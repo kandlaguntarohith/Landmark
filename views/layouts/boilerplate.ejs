@@ -31,10 +31,8 @@
     />
   </head>
   <body class="d-flex flex-column vh-100">
-    <%- include('../partials/navbar') %> <% if(showBgMap) {%>
-    <div id="cluster-map"></div>
-    <% } %>
-    <main class="<%=showBgMap ? '' : 'container'%> mt-5">
+    <%- include('../partials/navbar') %>
+    <main class="mt-5">
       <%- include('../partials/alert') %>
       <!-- <iframe
         id="spotify"

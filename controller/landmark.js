@@ -27,7 +27,9 @@ module.exports.renderShowlandmark = async (req, res) => {
         path: "author",
       },
     })
-    .populate("author");
+    .populate("author")
+    .populate("events");
+    // console.log(landmark);
   if (!landmark) {
     req.flash("error", "landmark not found !!");
     res.redirect("/landmarks");
@@ -106,11 +108,12 @@ module.exports.postlandmark = async (req, res) => {
   res.redirect(`/landmarks/${data._id}`);
 };
 module.exports.renderAlllandmarks = async (req, res) => {
-  const { search, category = "all" } = req.query;
+  const { search, category = "all", page = 1 } = req.query;
   const query = {};
   if (search) query.title = { $regex: ".*" + search + ".*" };
   if (category !== "all") query.category = category;
   const landmarks = await Landmark.find(query);
+  // .limit(10 * page);
   // console.log(category);
 
   res.render("landmarks/index", {

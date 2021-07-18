@@ -5,8 +5,10 @@ const createClusteredMap = async () => {
   const data = await fetch("https://ipapi.co/json/");
   const info = await data.json();
   // console.log("location", info);
+
   latitude = info.latitude;
   longitude = info.longitude;
+  // console.log(latitude, longitude);
   mapboxgl.accessToken = mapToken;
   const map = new mapboxgl.Map({
     container: "cluster-map",
@@ -15,8 +17,10 @@ const createClusteredMap = async () => {
     center: [longitude, latitude],
     zoom: 8,
   });
-
-  map.addControl(new mapboxgl.NavigationControl());
+  //controlls ========================================================
+  map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+  map.addControl(new mapboxgl.FullscreenControl(), "bottom-right");
+  //==================================================================
   map.on("load", function () {
     // Add a new source from our GeoJSON data and
     // set the 'cluster' option to true. GL-JS will
@@ -89,7 +93,8 @@ const createClusteredMap = async () => {
         .getSource("landmarks")
         .getClusterExpansionZoom(clusterId, function (err, zoom) {
           if (err) return;
-
+          // console.log(features[0].geometry.coordinates);
+          // features[0].geometry.coordinates[0] -= (zoom * 0.001);
           map.easeTo({
             center: features[0].geometry.coordinates,
             zoom: zoom,
@@ -134,18 +139,23 @@ const createClusteredMap = async () => {
 //   .then((data) => console.log(data));
 createClusteredMap();
 
-window.addEventListener("scroll", () => {
-  // console.log(
-  //   window.scrollY,
-  //   "   ",
-  //   window.innerHeight,
-  //   "   ",
-  //   document.documentElement.scrollHeight
-  // );
-  if (
-    window.scrollY + window.innerHeight >=
-    document.documentElement.scrollHeight
-  ) {
-    console.log("end");
-  }
-});
+// window.addEventListener("scroll", () => {
+//   const category = document.querySelector("#category").value;
+//   const search = document.querySelector("#search").value;
+
+//   // console.log(
+//   //   window.scrollY,
+//   //   "   ",
+//   //   window.innerHeight,
+//   //   "   ",
+//   //   document.documentElement.scrollHeight
+//   // );
+//   console.log(category, search);
+//   if (
+//     window.scrollY + window.innerHeight + 1000 >=
+//     document.documentElement.scrollHeight
+//   ) {
+//     // console.log("End of the page !");
+//     window.location.replace(`/landmarks?page=${page + 1}`);
+//   }
+// });

@@ -10,6 +10,7 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/express-error");
 const landmarkRouter = require("./routes/landmark");
 const reviewRouter = require("./routes/review");
+const eventRouter = require('./routes/event');
 const userRouter = require("./routes/user");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -143,6 +144,7 @@ app.get("/", (req, res) => {
 app.use("/", userRouter);
 app.use("/landmarks", landmarkRouter);
 app.use("/landmarks/:id/reviews", reviewRouter);
+app.use("/landmarks/:id/events", eventRouter);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found !!", 404));

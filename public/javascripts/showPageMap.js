@@ -1,14 +1,21 @@
 mapboxgl.accessToken = mapToken;
 // console.log(landmark)
 const goodlandmark = JSON.parse(landmark);
+const center = [...goodlandmark.geometry.coordinates];
+center[0] -= 3;
 const map = new mapboxgl.Map({
   container: "map", // container ID
   style: "mapbox://styles/mapbox/navigation-day-v1",
-  center: goodlandmark.geometry.coordinates,
+  center: center,
+
   zoom: 7, // starting zoom
 });
 
-map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
+// map.addControl(nav, 'bottom-right');
+map.addControl(new mapboxgl.FullscreenControl(),'bottom-right');
+map.scrollZoom.disable();
+//======================================================================
 // Set options
 var marker = new mapboxgl.Marker({
   color: "#4B0082",

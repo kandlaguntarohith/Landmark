@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Review = require("./review");
+const Event = require("./event");
 const Schema = mongoose.Schema;
 const { cloudinary } = require("../cloudinary/index");
 const opts = { toJSON: { virtuals: true } };
@@ -23,7 +24,7 @@ ImageSchema.virtual("thumbnail").get(function () {
   return this.url.replace("/upload", "/upload/c_scale,h_200,q_auto,r_0,w_300");
 });
 ImageSchema.virtual("cover").get(function () {
-  return this.url.replace("/upload", "/upload/c_scale,h_400,q_auto,r_0,w_600");
+  return this.url.replace("/upload", "/upload/c_scale,h_420,q_auto,r_0,w_600");
 });
 
 const landmarkSchema = new Schema(
@@ -57,6 +58,12 @@ const landmarkSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Review",
+      },
+    ],
+    events: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
       },
     ],
   }
